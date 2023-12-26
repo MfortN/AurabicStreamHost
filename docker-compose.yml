@@ -1,10 +1,19 @@
 version: "3.3"
 
-# networks:
-#   liver_default:
-#     external: true
+networks:
+  liver_default:
+    external: true
 
 services:
+  cloudflaretunnel:
+    container_name: tunnel-stream-02
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=$TUNNEL_TOKEN
+    command: tunnel --no-autoupdate run
+    networks:
+      - liver_default
   rtmp:
     build: ./rtmp
     ports:
@@ -17,12 +26,3 @@ services:
   auth:
     build: ./auth
     container_name: auth_server
-  # cloudflaretunnel:
-  #   container_name: tunnel-streamer-01
-  #   image: cloudflare/cloudflared
-  #   restart: unless-stopped
-  #   environment:
-  #     - TUNNEL_TOKEN=$TUNNEL_TOKEN
-  #   command: tunnel --no-autoupdate run
-  #   networks:
-  #     - liver_default
