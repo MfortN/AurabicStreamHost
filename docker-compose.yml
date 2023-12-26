@@ -1,0 +1,28 @@
+version: "3.3"
+
+# networks:
+#   liver_default:
+#     external: true
+
+services:
+  rtmp:
+    build: ./rtmp
+    ports:
+      - "1935:1935"
+      - "80:8080"
+    container_name: rtmp_server
+    volumes:
+      - ./mfortn:/tmp/hls
+
+  auth:
+    build: ./auth
+    container_name: auth_server
+  # cloudflaretunnel:
+  #   container_name: tunnel-streamer-01
+  #   image: cloudflare/cloudflared
+  #   restart: unless-stopped
+  #   environment:
+  #     - TUNNEL_TOKEN=$TUNNEL_TOKEN
+  #   command: tunnel --no-autoupdate run
+  #   networks:
+  #     - liver_default
